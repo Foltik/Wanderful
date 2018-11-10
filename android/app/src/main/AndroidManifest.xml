@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smax.hackprinceton">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +26,24 @@
         <meta-data
             android:name="GOOGLE_APPLICATION_CREDENTIALS"
             android:value= "AIzaSyCVktAWTsOabuB_YAZdLznuEtyiZnbUlss"/>
+        <meta-data android:name="com.here.android.maps.appid"
+            android:value="5IeXlxejoMkjqBbVMjmd"/>
+        <meta-data android:name="com.here.android.maps.apptoken"
+            android:value="5giAG_WCOngtLG4SkM5cIw"/>
+        <meta-data android:name="com.here.android.maps.license.key"
+            android:value="PRsXk9vGMv3ILJCUq7xn3eERd9514KmojoX6x4bU0xD7TN93b2f8Os4ESLCGHYTB0ARLUv2FlQnfRi396/dgctOmMr0Mb9fTYcGKADSyVSQwBs7hoOnQciCeLaDnFmuGbqPBrTX6+MV62AbkgOo2WGO04GxI74P7gvnHSN2QBgIf92ngSXKGd97izUXgRFtAShdEKlkmJWZgcuEpc4FbjDFsrzMSw9b/Zt2dC81tJw9bKzBzTNL1FKyHbRWGkxsaLU2oezqO2+A5ORni5FnW4g7Sna5Y6e4O1ttEJSzXSBmRheFp0sjvE3KLudVGOzTZEYCXY9uhfdNsPPDV8jIFD11A3TLXP9PoGt5UZO+o+g4r+dmYpTy33cN7CRe3lbxlbAjEzPXsfuDVRzCw+VpT5q6AZ344XAMs7El/xWSrRRgWQQp3bbfVDKeXne8c2ty4X7Ku/SDGBWPqu7RffL+Uhz7kniZO9Nr4Kd9lXaGlcNMB/ryf7CJxeu7qzzySZKePWZWbw21Pd8pvV9P7B4fdChFZq8LbeuB9/MnCvrJleNii+2HsKpc2+qCqmxTaM9vPg295H/+yCK69BnSpChbb21CR9VZNURtLKPzGW9WbcU//BJGjSOrVtIv4xvYljQDJFpaoG77+OkAb9QbkNC9fj/T67ICVAdiEccrgf6YVHEM="/>
+        <meta-data
+            android:name="INTENT_NAME"
+            android:value="geolocation" />
+        <service
+            android:name="com.here.android.mpa.service.MapService"
+            android:label="travelCompanion"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="geolocation"></action>
+            </intent-filter>
+        </service>
     </application>
+
 
 </manifest>
