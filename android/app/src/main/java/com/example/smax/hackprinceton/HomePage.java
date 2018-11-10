@@ -101,6 +101,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                             updatePicture(city);
                                             new PhotoAPI().execute(city);
 
+                                            /*
                                             final String code = location.getAddress().getCountryCode();
                                             findViewById(R.id.currency).setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -110,7 +111,6 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                                     startActivity(intent);
                                                 }
                                             });
-                                            /*
                                             findViewById(R.id.translator).setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
