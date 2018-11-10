@@ -27,7 +27,7 @@ public class Exchange extends AppCompatActivity{
     class exchangeClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Exchange();
+            //Exchange();
 
         }
     }
