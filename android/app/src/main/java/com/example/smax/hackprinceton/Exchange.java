@@ -14,20 +14,25 @@ public class Exchange extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+        setContentView(R.layout.activity_exchange);
         exchange = (Button)findViewById(R.id.currencyChange);
         exchange.setOnClickListener(new exchangeClick());
         String countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
 
     }
-    private double Exchange(String to,  String from){
+    /*
+    private double Exchanged(String to,  String from){
 
         return 1.0;//placeholder
     }
+    */
 
     class exchangeClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            //Exchange();
+
+            exchange.setText("hello");
+          //  Exchange();
 
         }
     }
