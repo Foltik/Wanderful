@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smax.hackprinceton">
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data android:name="com.here.android.maps.appid"
+            android:value="MhtJIoHyHZaqwlq1pq2R"/>
+        <meta-data android:name="com.here.android.maps.apptoken"
+            android:value="CGW0ngBlXWx2Nq9WdA8f0Q"/>
+        <meta-data android:name="com.here.android.maps.license.key"
+            android:value="aFbldgPvHc5DaMpoBvYu8FwVEoqLjvnExGSUHKhxVFcSCTZWgQ3/CuQ6IXCepaB/4nYZfzSSzER6m8eCYxAHSge42wLAw8Nz2Dj7zw8QT2+33tZ2YQHcghAfSwaV/Kvl6aUrXPyWoHZMAAC/KxFU6hpXnFUMombQjFXPhl5MMCgiSpYSXiitXWH0hxL5IKtxhX1jF/nJGi4SCand7tKx0KGimL89IwGsvMO4y9E6dUWiAu2cY2WsIrZnWw6lGr7RmnBPyPTqU+LaHSe7I+v9C8CgTkCB4LqRRa9ybYwqy7gANjzZ/7Ih8nu7mFxazNBciMMOEZVFxzKtEvZfyiaLdmNQI8fEPvmQQHOjNP4S1AYgI8p8XxYwa60toIMY0n+vM80NMLgwLkXSQvkMH+CFuIR5j0v4gAKf84G0+FjjxARGlZkb4l3L/wyDy0kVSCpwpjX5FK04MvZCU8fu27rTA8iYgRHC20Umd55gkKraKDFlJE3oFPFCWfdgdzEHfnG8Raz8QLwS6XC/MKZlMPPsvZwlLGdqFUOstqBaPExxVevbtqLHQjRN0w1f4MdFd5CEWtTEVd8w0LKMPJJPkDn0Lrh6WJLmLp+1E6A11lhgzrAGaBkME6wwwX06XbSizUoM2HFwSYkJEy+kX6ljxKX5vLDxqryWgICgCsx/tXYDuDo="/>
     </application>
+
 
 </manifest>
