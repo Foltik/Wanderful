@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">HackPrinceton</string>
+    <string name="welcome_text">Welcome to</string>
+    <string name="itin_button">Your Itinerary</string>
+    <string name="nearby_button">Nearby Places</string>
+    <string name="trans_button">Translator</string>
+    <string name="exch_button">Currency Exchange</string>
+    <string name="banner_desc">Welcome Banner Image</string>
 </resources>
