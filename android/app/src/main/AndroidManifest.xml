@@ -29,11 +29,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePage" />
         </activity>
+
         <activity android:name=".NearbyPlaces"
             android:parentActivityName=".HomePage">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePage"/>
+        </activity>
+
+        <activity android:name=".Itinerary"
+            android:parentActivityName=".HomePage"
+            android:label="Generate Itinerary">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePage" />
         </activity>
 
         <meta-data android:name="com.here.android.maps.appid"
