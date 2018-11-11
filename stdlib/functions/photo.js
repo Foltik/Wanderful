@@ -2,6 +2,8 @@ const places = require('../places.js');
 
 /**
 * Returns a photo URL from a text search
+* Example place: `"Tokyo"`
+* Example return: "https://lh3.googleusercontent.com/p/AF1QipONQIjPH65hqea57"
 * @param {string} place Query string
 * @returns {object}
 */

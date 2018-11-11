@@ -1,9 +1,15 @@
 const places = require('../places.js');
 
 /**
-* Returns a list of nearby places
+* Returns a list of places nearby a central location.
+* Optionally only searches for a certain type of place.
+* Example location: `"35.46323,123.67834"`
+* Example radius: `3`
+* Example num: `5`
+* Example type: `"restaurant"`
+* Example return: `[Place, Place, ...]` (See above)
 * @param {string} location Comma separated latitude and longitude to search around
-* @param {number} radius How far around to search for points of interest
+* @param {number} radius How far around to search for points of interest in meters
 * @param {number} num Limit the number of places returned
 * @param {string} type Optionally only find a certain type of place
 * @returns {object}

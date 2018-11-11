@@ -1,6 +1,6 @@
 {
   "name": "itinegen",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "",
   "author": "foltik <jack@foltz.io>",
   "main": "functions/__main__.js",

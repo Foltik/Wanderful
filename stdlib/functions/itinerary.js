@@ -12,10 +12,16 @@ const fieldSubmap = (array, field, fn) =>
       array.map(sub => sub.map(fieldMap(sub, field, fn)));
 
 /**
-* Returns a list of the best places
-* @param {number} radius How far around to search for points of interest
+* Returns a travel itinerary of places around a central location.
+* The order of places is determined by the categories and their weight.
+* Example radius: `6000`
+* Example center: `Tokyo, Japan`
+* Example queries: `[{"query": "museum", weight: 7}, {"query": "restaurant", "weight": 9}]`
+* Example num: `3`
+* Example return: [Place, Place, ...] (See above)
+* @param {number} radius How far around to search for points of interest in meters
 * @param {string} center Location to center the search around
-* @param {array} queries JSON serialized pairs of keywords with weight to find and sort points of interest
+* @param {string} queries JSON serialized pairs of keywords with weight to find and sort points of interest
 * @param {number} num Limit the maximum number of places
 * @returns {object}
 */

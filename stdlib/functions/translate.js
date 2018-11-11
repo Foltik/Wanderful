@@ -5,7 +5,11 @@ const api_url = 'https://translation.googleapis.com/language/translate/v2';
 const key = '&key=AIzaSyCVktAWTsOabuB_YAZdLznuEtyiZnbUlss';
 
 /**
-* Translates a string
+* Translates a string between different languages.
+* Example from: `"en"`
+* Example to: `"jpn"`
+* Example str: `"Hello!"`
+* Example return: `"こんにちは！"`
 * @param {string} from ISO language code of starting language
 * @param {string} to ISO country code of destination country which is converted to a language code
 * @param {string} str String to translate

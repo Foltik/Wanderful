@@ -4,7 +4,9 @@ const api_url = 'https://restcountries.eu/rest/v2/alpha/';
 const key = '&access_key=4d764507f666731a05a6ff3411aae672';
 
 /**
-* Returns the ISO language code for a country
+* Returns the string ISO language code, given an ISO country code.
+* Example country: `"usa"`
+* Example return: `"en"`
 * @param {string} country ISO country code
 * @returns {object}
 */

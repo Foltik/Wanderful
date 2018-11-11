@@ -5,8 +5,12 @@ const api_url = 'http://data.fixer.io/api/latest';
 const key = '?access_key=4d764507f666731a05a6ff3411aae672';
 
 /**
-* Returns the exchange rate between two currencies.
-* The target currency is determied from a country code lookup.
+* Returns the float exchange rate between two currencies.
+* The target is passed as a country code.
+* The API converts this country code to the primary currency of that country.
+* Example from: `"USD"`
+* Example to: `"jpn"`
+* Example return: `113.83`
 * @param {string} from ISO currency code for the starting currency
 * @param {string} to ISO country code with which to determine target currency code 
 * @returns {object}
