@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/currencyDisplay"
-        android:layout_width="186dp"
+        android:layout_width="101dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
