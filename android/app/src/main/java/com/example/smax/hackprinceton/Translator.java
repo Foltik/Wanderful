@@ -5,14 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/*
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.Translate.TranslateOption;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
-
+*/
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -35,7 +36,7 @@ public class Translator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Instantiates a client
         setContentView(R.layout.activity_translator);
-        Button button = findViewById(R.id.saveButton);
+        ImageButton button = findViewById(R.id.saveButton);
         final TextView userText = findViewById(R.id.userText);
         final TextView translateText = findViewById(R.id.translateText);
         final TextView phrasesText = findViewById(R.id.phrasesText);
@@ -53,7 +54,7 @@ public class Translator extends AppCompatActivity {
                     BufferedReader br = new BufferedReader(isr);
                     StringBuilder sb = new StringBuilder();
                     String readText;
-                    while ((readText = br.readLine()) != null{
+                    while ((readText = br.readLine()) != null){
                         sb.append(readText).append("\n");
                     }
 
@@ -103,7 +104,7 @@ public class Translator extends AppCompatActivity {
             while ((temp = bReader.readLine()) != null) {
                 response += temp;
             }
-            textView.setText(response);
+            translateText.setText(response);
             object = (JSONObject) new JSONTokener(response).nextValue();
         } catch (Exception e) {
             Log.e("hackprinceton",e.toString());
@@ -130,15 +131,15 @@ public class Translator extends AppCompatActivity {
 
 
             if (lang != null) {
-                textView.setText(lang);
+                translateText.setText(lang);
 
-                new RunTranslation().execute("Hello, world!", "en", lang);
+              //  new RunTranslation().execute("Hello, world!", "en", lang);
 
             }
 
         }
     }
-
+/*
     public class RunTranslation extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -169,5 +170,6 @@ public class Translator extends AppCompatActivity {
     public void savePhrase(View view) {
 
     }
+    */
 }
 

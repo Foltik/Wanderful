@@ -15,16 +15,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomePage">
+
+        <!--Parent activity, always go back to this layout-->
+        <activity
+            android:name=".HomePage"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Exchange"
-            android:parentActivityName=".HomePage">
+        <!--***********************************************-->
+        <activity
+            android:name=".Exchange"
+            android:parentActivityName=".HomePage"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePage" />
@@ -32,7 +39,8 @@
 
         <activity android:name=".Itinerary"
             android:parentActivityName=".HomePage"
-            android:label="Generate Itinerary">
+            android:label="Generate Itinerary"
+            android:screenOrientation="portrait">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

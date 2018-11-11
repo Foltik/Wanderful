@@ -7,39 +7,55 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/currencyDisplay"
-        android:layout_width="101dp"
-        android:layout_height="37dp"
+        android:id="@+id/exchangeSum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Amount in exchanged currency"
+        android:layout_marginBottom="32dp"
+        android:text="[Value of Exchanged Currency]"
+        android:textSize="10pt"
         app:layout_constraintBottom_toTopOf="@+id/usdText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/usdText"
-        android:layout_width="1.5in"
-        android:layout_height="0.25in"
+    <TextView
+        android:id="@+id/exchangeRateDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="10pt"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:inputType="number"
-        android:hint="Amount in USD ($)"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Exchange Rate"
+        app:layout_constraintBottom_toTopOf="@+id/exchangeSum"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.347" />
+        app:layout_constraintVertical_bias="0.4" />
+
+    <EditText
+        android:id="@+id/usdText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="Amount in USD ($)"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.458" />
 
     <Button
         android:id="@+id/currencyChange"
-        android:layout_width="0.75in"
-        android:layout_height="0.25in"
+        android:layout_width="match_parent"
+        android:layout_height="0.5in"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
