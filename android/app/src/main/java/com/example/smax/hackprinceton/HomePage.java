@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.renderscript.ScriptGroup;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,12 +39,14 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,16 +58,10 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
     private int[] permissionsGranted;
     private String googleAPIKey = "AIzaSyDljrMJe9V4a1ae3bIBEtvmewMC7DLxh5Q";
     private TextView banner;
-    class GeocodeListener implements ResultListener<List<Location>> {
-        @Override
-        public void onCompleted(List<Location> data, ErrorCode error) {
-            if (error != ErrorCode.NONE) {
-                // Handle error\
-            } else {
-                // Process result data
-            }
-        }
-    }
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +70,26 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         setContentView(R.layout.activity_home_page);
         banner = findViewById(R.id.welcomeBanner);
         initMapEngine();
+
+    }
+
+    private class setCityImage extends AsyncTask<JSONObject, Void, Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(JSONObject... urls) {
+
+            try {
+                URL url = new URL(urls[0].getString("result"));
+                return BitmapFactory.decodeStream((InputStream) url.getContent());
+            }catch(Exception e){
+                Log.e("fuq", e.toString());
+            }
+            return null;
+        }
+        protected void onPostExecute(Bitmap response){
+            ImageView image = findViewById(R.id.welcomeBannerImage);
+            image.setImageBitmap(response);
+        }
 
     }
 
@@ -98,10 +115,17 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                         if(errorCode == ErrorCode.NONE){
                                             String city = location.getAddress().getCity();
                                             updateLocation(city);
-                                            updatePicture(city);
-                                            new PhotoAPI().execute(city);
+                                            String url = new stdlibAPICall("/photo", new stdlibAPICallback() {
+                                                @Override
+                                                public void onComplete(JSONObject result) {
+                                                    Log.e("me", "shits done at least");
+                                                    Log.e("me", result.length() + "");
+                                                    new setCityImage().execute(result);
 
 
+                                                }
+                                            }).add("place",city).execute();
+                                            Log.e("me", url);
 
                                             final String code = location.getAddress().getCountryCode();
                                             findViewById(R.id.currency).setOnClickListener(new View.OnClickListener() {
@@ -221,84 +245,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
             });
         }
     }
-    private void updatePicture(String city){
 
-    }
-    public class PhotoAPI extends AsyncTask<String, Void, Bitmap>{
-        private String googleAPIKey = "AIzaSyDljrMJe9V4a1ae3bIBEtvmewMC7DLxh5Q";
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            StringBuilder request = new StringBuilder();
-            request.append("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?")
-            .append("input=").append(params[0])
-            .append("&inputtype=textquery&fields=photos")
-            .append("&key=").append(googleAPIKey);
-            HttpURLConnection urlConnection = null;
-            URL url = null;
-            JSONObject object = null;
-            InputStream inStream = null;
-            try{
-                url = new URL(request.toString());
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
-                urlConnection.connect();
-                inStream = urlConnection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-                String temp, response = "";
-                while ((temp = reader.readLine()) != null) {
-                    response += temp;
-                }
-                object = (JSONObject) new JSONTokener(response).nextValue();
-            }catch(Exception e){
-
-            }finally {
-                if (inStream != null) {
-                    try {
-                        // this will close the bReader as well
-                        inStream.close();
-                    } catch (IOException ignored) {
-                    }
-                }
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-            String imagereference = null;
-            if(object != null) {
-                try {
-                    imagereference = object.getJSONArray("candidates")
-                            .getJSONObject(0)
-                            .getJSONArray("photos")
-                            .getJSONObject(0)
-                            .getString("photo_reference");
-                } catch (JSONException e) {
-                    Log.e("hackprinceton", e.getMessage());
-                }
-            }
-            if (imagereference != null){
-                object = null;
-                StringBuilder imageURLAPI = new StringBuilder();
-                imageURLAPI.append("https://maps.googleapis.com/maps/api/place/photo?")
-                        .append("maxwidth=800")
-                        .append("&photoreference=").append(imagereference)
-                        .append("&key=").append(googleAPIKey);
-                Bitmap bannerimage = null;
-                try {
-                    InputStream in = new java.net.URL(imageURLAPI.toString()).openStream();
-                    bannerimage = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
-                return bannerimage;
-            }else return null;
-        }
-        protected void onPostExecute(Bitmap response){
-            ImageView image = findViewById(R.id.welcomeBannerImage);
-            image.setImageBitmap(response);
-        }
-    }
 }
+
 

@@ -1,14 +1,7 @@
 package com.example.smax.hackprinceton;
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
+
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -20,43 +13,44 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Exchange extends AppCompatActivity{
-    private Button exchange;
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        setContentView(R.layout.activity_exchange);
-        exchange = (Button)findViewById(R.id.currencyChange);
-        exchange.setOnClickListener(new exchangeClick());
-        String countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
+public class stdlibAPICall {
+    private String apifunction;
+    private StringBuilder query;
+    private boolean firstParam = true;
+    stdlibAPICallback callbackFunc;
+    public stdlibAPICall(String function, stdlibAPICallback callback){
+        query = new StringBuilder();
+        apifunction = function;
+        callbackFunc = callback;
+        query.append("https://foltik.lib.id/itinegen@dev")
+            .append(function);
     }
-    class exchangeClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
+    public stdlibAPICall add(String key, Object o){
+        if (firstParam)
+            query.append("?");
+        else
+            query.append("&");
 
-            exchange.setText("hello");
-          //  Exchange();
-
-        }
+        query.append(key)
+                .append("=")
+                .append(o.toString());
+        return this;
     }
-    /*
-    public class exchangeRate extends AsyncTask<String, Void, Double>{
-        private String fixerAPIKey = "4d764507f666731a05a6ff3411aae672";
+
+    public String execute() {
+        new APICall().execute(query.toString());
+        return query.toString();
+    }
+    public class APICall extends AsyncTask<String, Void, JSONObject>{
+
         @Override
-        protected Double doInBackground(String... params){
-            StringBuilder request = new StringBuilder();
-            request.append("http://data.fixer.io/api/latest")
-                    .append("?access_key="+fixerAPIKey)
-                    .append("&base="+param[0])
-                    .append("&symbols="+param[1])
-                    .append("&format=1");
+        protected JSONObject doInBackground(String... strings) {
             HttpURLConnection urlConnection = null;
             URL url = null;
             JSONObject object = null;
             InputStream inStream = null;
             try{
-                url = new URL(request.toString());
+                url = new URL(strings[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setDoOutput(true);
@@ -68,9 +62,10 @@ public class Exchange extends AppCompatActivity{
                 while ((temp = reader.readLine()) != null) {
                     response += temp;
                 }
+                Log.e("response length", ""+response.length());
                 object = (JSONObject) new JSONTokener(response).nextValue();
             }catch(Exception e){
-
+                Log.e("exception", e.toString());
             }finally {
                 if (inStream != null) {
                     try {
@@ -83,9 +78,11 @@ public class Exchange extends AppCompatActivity{
                     urlConnection.disconnect();
                 }
             }
-
+            Log.e("object?: ", object != null ? object.toString() : "it was null fuq");
+            return object;
+        }
+        protected void onPostExecute(JSONObject result){
+            callbackFunc.onComplete(result);
         }
     }
-    */
 }
-
