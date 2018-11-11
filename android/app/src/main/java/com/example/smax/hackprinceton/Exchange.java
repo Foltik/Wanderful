@@ -50,14 +50,12 @@ public class Exchange extends AppCompatActivity{
 
         new APICall("/exchange", result -> {
             exchangeRate = result.getDouble("result");
-        })
-            .param("from", "USD")
-            .param("to", countryCode).execute();
+        }).param("from", "USD").param("to", countryCode).execute();
+
         new APICall("/currency",result -> {
             currencySymbol = result.getString("result");
             exchangeRateDisplay.setText("Exchange Rate from USD to "+ currencySymbol + " is " +exchangeRate);
-        })
-                .param("country",countryCode).execute();
+        }).param("country",countryCode).execute();
     }
 
     class exchangeClick implements View.OnClickListener {
@@ -75,9 +73,8 @@ public class Exchange extends AppCompatActivity{
             }
         }
 
-
-        }
     }
+}
 
 
 

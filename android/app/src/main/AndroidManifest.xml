@@ -37,11 +37,17 @@
                 android:value=".HomePage" />
         </activity>
 
+        <activity android:name=".Translator"
+            android:parentActivityName=".HomePage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePage" />
+        </activity>
+
         <activity android:name=".Itinerary"
             android:parentActivityName=".HomePage"
             android:label="Generate Itinerary"
             android:screenOrientation="portrait">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePage" />
