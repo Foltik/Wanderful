@@ -6,15 +6,25 @@ const key = '&key=AIzaSyCL2k612OOVYYxrqP2j7t1ty8nANPpQlPE';
 const get_api = async resource =>
       axios.get(api_url + resource + key);
 
+const get_api_noredirect = async resource =>
+      axios.get(api_url + resource + key, {
+          maxRedirects: 0
+      });
+
 const getCoordinates = async query => {
     const loc = (await get_api('/findplacefromtext/json'
         + '?input=' + query
         + '&inputtype=textquery'
-        + '&fields=geometry'
-        + key)).data.candidates[0].geometry.location;
+        + '&fields=geometry')).data.candidates[0].geometry.location;
 
     return [loc.lat, loc.lng];
 };
+
+const getPlace = async query =>
+      (await get_api('/findplacefromtext/json'
+                     + '?input=' + query
+                     + '&inputtype=textquery'
+                     + '&fields=photos')).data.candidates[0];
 
 const getPlaces = async (location, radius, query) =>
     (await get_api('/textsearch/json'
@@ -27,12 +37,19 @@ const getDetails = async place_id =>
         + '?placeid=' + place_id
         + '&fields=opening_hours')).data.results;
 
-const getPhoto = async (photo_id, max_height = 10000) =>
-    (await get_api('/photo'
-        + '?maxheight=' + max_height
+const getPhoto = async (photo_id, max_width = 800) => {
+    try {
+        const res = (await get_api_noredirect('/photo'
+        + '?maxwidth=' + max_width
         + '&photoreference=' + photo_id)).data;
+        return res;
+    } catch(err) {
+        return err.response.headers.location;
+    }
+};
 
 module.exports.getCoordinates = getCoordinates;
+module.exports.getPlace = getPlace;
 module.exports.getPlaces = getPlaces;
 module.exports.getDetails = getDetails;
 module.exports.getPhoto = getPhoto;

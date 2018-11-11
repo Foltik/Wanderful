@@ -1,5 +1,5 @@
 /**
-* Returns something that could resemble an itinerary
+* Returns a list of the best places
 * @param {number} radius How far around to build the itinerary
 * @param {string} center Where to build the itinerary around
 * @param {string} home Where to start the itinerary
@@ -8,7 +8,7 @@
 * @param {number} end_time When to end the day
 * @param {string} date What day to plan the itinerary
 * @param {number} num How many places to return
-* @returns {object}
+* @returns {array}
 */
 
 const lib = require('lib');
