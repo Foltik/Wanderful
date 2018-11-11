@@ -71,6 +71,12 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                     startActivity(intent);
                 });
 
+                findViewById(R.id.itinerary).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
+                    startActivity(intent);
+                });
+
                 if (savedImage == null)
                     updateCity();
             });
