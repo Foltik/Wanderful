@@ -2,6 +2,7 @@ package com.example.smax.hackprinceton.util.serialize;
 
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -40,5 +41,13 @@ public class Serializer<T> {
             Log.e("ERROR", "AAAAAAAA", e);
         }
         return val;
+    }
+
+    public void clear() {
+        new File(fileName).delete();
+    }
+
+    public boolean exists() {
+        return new File(fileName).exists();
     }
 }
