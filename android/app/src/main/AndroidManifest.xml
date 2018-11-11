@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/TravelAppTheme">
 
-        android:theme="@style/AppTheme">
 
         <!--Parent activity, always go back to this layout-->
         <activity
@@ -61,7 +60,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomePage" />
         </activity>
-
+        <activity android:name=".ItinegenMenu"
+            android:parentActivityName=".Itinerary"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Itinerary"/>
+        </activity>
         <meta-data android:name="com.here.android.maps.appid"
             android:value="5IeXlxejoMkjqBbVMjmd"/>
         <meta-data android:name="com.here.android.maps.apptoken"

@@ -65,7 +65,8 @@ public class NearbyPlaces extends AppCompatActivity {
                     Log.e("urls", ""+entryNameURLs.size());
                 }).param("num", new Integer(numPlacesGenerated))
                         .param("location",location.getLatitude()+","+location.getLongitude())
-                        .param("radius", new Integer(4000))
+                        .param("radius", new Integer(40000))
+                        .param("type", "museum")
                         .execute();
             }
         });
