@@ -32,6 +32,14 @@ const getPlaces = async (location, radius, query) =>
         + '&radius=' + radius
         + '&query=' + encodeURIComponent(query))).data.results;
 
+const getNearby = async (location, radius, type = null) =>
+      (await get_api('/nearbysearch/json'
+        + '?location=' + location
+        + (type ? ('&type=' + type) : '')
+        + '&opennow'
+        + '&radius=' + radius)).data.results;
+                     
+                    
 const getDetails = async place_id =>
     (await get_api('/details/json'
         + '?placeid=' + place_id
@@ -51,5 +59,6 @@ const getPhoto = async (photo_id, max_width = 800) => {
 module.exports.getCoordinates = getCoordinates;
 module.exports.getPlace = getPlace;
 module.exports.getPlaces = getPlaces;
+module.exports.getNearby = getNearby;
 module.exports.getDetails = getDetails;
 module.exports.getPhoto = getPhoto;
