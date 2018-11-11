@@ -40,7 +40,7 @@ public class APICall {
     }
 
     public void execute() {
-        Log.e("queryurl",query.toString());
+        Log.i("Querying API",query.toString());
 
         new AsyncCall().execute(query.toString());
     }
@@ -85,7 +85,6 @@ public class APICall {
 
         protected void onPostExecute(JSONObject result) {
             try {
-                Log.d("THING", result.toString());
                 callback.onComplete(result);
             } catch (JSONException e) {
                 Log.e("HackPrinceton", "Callback JSON Error", e);

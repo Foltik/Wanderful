@@ -40,8 +40,11 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
     private Serializer<BitmapDataObject> imageSerializer;
+    private Serializer<String> bannerSerializer;
     private int[] permissions;
     private boolean permissionsGranted;
+
+    private boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,13 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        bannerSerializer = new Serializer<>("banner.txt");
+        if (bannerSerializer.exists())
+            ((TextView)findViewById(R.id.welcomeBanner)).setText(bannerSerializer.load());
 
         imageSerializer = new Serializer<>("homeImage.png");
-        BitmapDataObject savedImage = imageSerializer.load();
-        if(savedImage != null){
-            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(savedImage.getBitmap());
-        }
+        if (imageSerializer.exists())
+            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(imageSerializer.load().getBitmap());
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initMapEngine(() -> {
@@ -86,10 +90,14 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                     startActivity(intent);
                 });
 
-                if (savedImage == null)
+                if (!imageSerializer.exists() || !bannerSerializer.exists() || firstRun) {
                     updateCity();
+                    firstRun = false;
+                }
             });
         });
+
+        findViewById(R.id.refreshButton).setOnClickListener(v -> updateCity());
     }
 
     private interface UpdateLocationCallback {
@@ -120,8 +128,10 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         if (!permissionsGranted)
             return;
 
+        String text = "Welcome to " + lastLocation.getAddress().getCity();
         TextView banner = findViewById(R.id.welcomeBanner);
-        banner.setText("Welcome to " + lastLocation.getAddress().getCity());
+        banner.setText(text);
+        bannerSerializer.save(text);
 
         Log.d("APICall", "Starting API Call");
 

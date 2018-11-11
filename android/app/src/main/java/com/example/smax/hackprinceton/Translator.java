@@ -26,9 +26,8 @@ public class Translator extends AppCompatActivity {
         final TextView phrasesText = findViewById(R.id.phrasesText);
 
         savedSerializer = new Serializer<>("saved.txt");
-        String oldText = savedSerializer.load();
-        if (oldText != null)
-            phrasesText.setText(oldText);
+        if (savedSerializer.exists())
+            phrasesText.setText(savedSerializer.load());
 
         String countryCode = getIntent().getStringExtra("COUNTRY_CODE");
 
@@ -50,10 +49,11 @@ public class Translator extends AppCompatActivity {
             savedSerializer.save(newText);
             phrasesText.setText(newText);
         });
+
         clearButton.setOnClickListener(v -> {
-                    Serializer.clear();
-        }
-        );
+            savedSerializer.clear();
+            phrasesText.setText("");
+        });
     }
 }
 
