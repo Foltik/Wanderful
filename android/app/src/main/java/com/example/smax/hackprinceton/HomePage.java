@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smax.hackprinceton.util.api.APICall;
+import com.example.smax.hackprinceton.util.serialize.BitmapDataObject;
 import com.example.smax.hackprinceton.util.serialize.Serializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,7 +39,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
-    private Serializer<Bitmap> imageSerializer;
+    private Serializer<BitmapDataObject> imageSerializer;
     private int[] permissions;
     private boolean permissionsGranted;
 
@@ -51,10 +52,10 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         setContentView(R.layout.activity_home_page);
 
 
-        imageSerializer = new Serializer<>("homeImage.bmp");
-        Bitmap savedImage = imageSerializer.load();
+        imageSerializer = new Serializer<>("homeImage.png");
+        BitmapDataObject savedImage = imageSerializer.load();
         if(savedImage != null){
-            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(savedImage);
+            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(savedImage.getBitmap());
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -73,7 +74,6 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                     startActivity(intent);
                 });
 
-                updateCity();
                 findViewById(R.id.translator).setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), Translator.class);
                     intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
@@ -126,8 +126,9 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         Log.d("APICall", "Starting API Call");
 
         new APICall("/photo", result -> {
-            Log.d("APICall", result.getString("result"));
-            new SetCityImageFromURL(this).execute(result.getString("result"));
+            String res = result.getString("result");
+            Log.d("APICall", res);
+            new SetCityImageFromURL(this).execute(res);
         }).param("place", lastLocation.getAddress().getCity()).execute();
 
     }
@@ -201,7 +202,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         protected void onPostExecute(Bitmap bitmap) {
             ImageView image = activityReference.get().findViewById(R.id.welcomeBannerImage);
             image.setImageBitmap(bitmap);
-            activityReference.get().imageSerializer.save(bitmap);
+            activityReference.get().imageSerializer.save(new BitmapDataObject(bitmap));
         }
     }
 }

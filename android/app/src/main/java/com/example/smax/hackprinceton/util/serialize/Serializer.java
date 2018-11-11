@@ -22,6 +22,7 @@ public class Serializer<T> {
             objectOutputStream.close();
             fileOutputStream.close();
         } catch (java.lang.Throwable e) {
+            Log.e("ERROR", e.toString());
             Log.e("ERROR", "AAAAAAAA", e);
         }
     }
@@ -35,6 +36,7 @@ public class Serializer<T> {
             objectInputStream.close();
             fileInputStream.close();
         } catch (java.lang.Throwable e) {
+            Log.e("ERROR", e.toString());
             Log.e("ERROR", "AAAAAAAA", e);
         }
         return val;
