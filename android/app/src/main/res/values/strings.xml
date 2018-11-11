@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackPrinceton</string>
+    <string name="app_name">Wanderful</string>
     <string name="welcome_text">Welcome to</string>
     <string name="itin_button">Your Itinerary</string>
     <string name="nearby_button">Nearby Places</string>

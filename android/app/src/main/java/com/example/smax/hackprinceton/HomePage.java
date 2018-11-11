@@ -85,8 +85,9 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                 });
 
                 findViewById(R.id.itinerary).setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    Intent intent = new Intent(v.getContext(), Itinerary.class);
                     intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
+                    intent.putExtra("ENTRIES", "{}");
                     startActivity(intent);
                 });
 

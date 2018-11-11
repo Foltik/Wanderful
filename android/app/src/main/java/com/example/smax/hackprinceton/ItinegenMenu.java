@@ -138,7 +138,7 @@ public class ItinegenMenu extends AppCompatActivity {
     }
     public String jsonFormer(String cat, int num){
         StringBuilder json = new StringBuilder();
-        json.append("{\"query\":").append(cat)
+        json.append("{\"query\":").append('\"'+cat+"\",")
                 .append("\"weight\":").append(num).append('}');
         return json.toString();
     }

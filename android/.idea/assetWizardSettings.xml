@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="50" />
+                                                <entry key="scalingPercent" value="69" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -33,7 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundImage" value="C:\Users\Jacques\Documents\GitHub\HackPrinceton\android\app\src\main\res\drawable\phrasestar.png" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="f5bf3c" />
+                                      <entry key="foregroundImage" value="C:\Users\smax2\Documents\HackPrinceton\android\app\src\main\res\drawable\luggage.png" />
                                       <entry key="foregroundLayerName" value="ic_hackstar" />
                                     </map>
                                   </option>
