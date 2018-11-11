@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/TravelAppTheme">
+
         android:theme="@style/AppTheme">
 
         <!--Parent activity, always go back to this layout-->
