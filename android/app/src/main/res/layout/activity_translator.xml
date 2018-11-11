@@ -31,6 +31,13 @@
                     android:layout_marginRight="30dp"/>
 
 
+                <Button
+                    android:id="@+id/translateButton"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Translate" />
+
                 <TextView
                     android:id="@+id/translateText"
                     android:layout_width="0dp"

@@ -42,6 +42,7 @@ public class Exchange extends AppCompatActivity{
         String countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
 
         //API Call to retrieve latest exchange rate
+        /*
         new stdlibAPICall("/exchange", new stdlibAPICallback() {
             @Override
             public void onComplete(JSONObject result) {
@@ -53,6 +54,7 @@ public class Exchange extends AppCompatActivity{
 
             }
         }).add("from","USD").add("to",countryCode).execute();
+        */
     }
     class exchangeClick implements View.OnClickListener {
         @Override
