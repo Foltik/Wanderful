@@ -2,6 +2,7 @@ package com.example.smax.hackprinceton.util.serialize;
 
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -22,6 +23,7 @@ public class Serializer<T> {
             objectOutputStream.close();
             fileOutputStream.close();
         } catch (java.lang.Throwable e) {
+            Log.e("ERROR", e.toString());
             Log.e("ERROR", "AAAAAAAA", e);
         }
     }
@@ -35,8 +37,17 @@ public class Serializer<T> {
             objectInputStream.close();
             fileInputStream.close();
         } catch (java.lang.Throwable e) {
+            Log.e("ERROR", e.toString());
             Log.e("ERROR", "AAAAAAAA", e);
         }
         return val;
+    }
+
+    public void clear() {
+        new File(fileName).delete();
+    }
+
+    public boolean exists() {
+        return new File(fileName).exists();
     }
 }

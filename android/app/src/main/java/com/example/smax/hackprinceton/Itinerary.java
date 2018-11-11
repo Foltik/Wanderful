@@ -23,7 +23,7 @@ public class Itinerary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.activity_itinerary);
-        String countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
+        String coords = intent.getStringExtra("COORDINATES");//from HomePage
         linearLayout = findViewById(R.id.lnrDynamicTextHolder);
         numPlaces = findViewById(R.id.edtNoCreate);
         genItin = (Button)findViewById(R.id.addBtn);

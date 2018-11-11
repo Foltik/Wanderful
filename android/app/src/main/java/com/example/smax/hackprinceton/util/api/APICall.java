@@ -40,17 +40,12 @@ public class APICall {
     }
 
     public void execute() {
-        Log.e("thing", query.toString());
-        new AsyncCall(this).execute(query.toString());
+        Log.e("queryurl",query.toString());
+
+        new AsyncCall().execute(query.toString());
     }
 
-    public static class AsyncCall extends AsyncTask<String, Void, JSONObject> {
-        private WeakReference<APICall> callReference;
-
-        AsyncCall(APICall call) {
-            callReference = new WeakReference<>(call);
-        }
-
+    public class AsyncCall extends AsyncTask<String, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(String... strings) {
             HttpURLConnection urlConnection = null;
@@ -90,7 +85,8 @@ public class APICall {
 
         protected void onPostExecute(JSONObject result) {
             try {
-                callReference.get().callback.onComplete(result);
+                Log.d("THING", result.toString());
+                callback.onComplete(result);
             } catch (JSONException e) {
                 Log.e("HackPrinceton", "Callback JSON Error", e);
             }

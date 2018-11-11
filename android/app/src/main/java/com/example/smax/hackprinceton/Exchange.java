@@ -48,6 +48,7 @@ public class Exchange extends AppCompatActivity{
         //numDollars = Double.parseDouble(usdSum.getText().toString());
         countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
 
+
         new APICall("/exchange", result -> {
             exchangeRate = result.getDouble("result");
         }).param("from", "USD").param("to", countryCode).execute();
