@@ -26,7 +26,7 @@ public class Itinerary extends AppCompatActivity {
         String coords = intent.getStringExtra("COORDINATES");//from HomePage
         linearLayout = findViewById(R.id.lnrDynamicTextHolder);
         numPlaces = findViewById(R.id.edtNoCreate);
-        genItin = (Button)findViewById(R.id.btnCreate);
+        genItin = (Button)findViewById(R.id.addBtn);
         addPl = (Button)findViewById(R.id.addBtn);
         addPl.setOnClickListener(new addPlace());
         genItin.setOnClickListener(new generateItinerary());

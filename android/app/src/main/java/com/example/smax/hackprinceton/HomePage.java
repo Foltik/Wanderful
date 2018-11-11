@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smax.hackprinceton.util.api.APICall;
+import com.example.smax.hackprinceton.util.serialize.Serializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.here.android.mpa.common.*;
@@ -37,7 +38,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
-
+    private Serializer<Bitmap> imageSerializer;
     private int[] permissions;
     private boolean permissionsGranted;
 
@@ -48,6 +49,13 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+
+        imageSerializer = new Serializer<>("homeImage.bmp");
+        Bitmap savedImage = imageSerializer.load();
+        if(savedImage != null){
+            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(savedImage);
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initMapEngine(() -> {
@@ -66,6 +74,20 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                 });
 
                 updateCity();
+                findViewById(R.id.translator).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
+                    startActivity(intent);
+                });
+
+                findViewById(R.id.itinerary).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
+                    startActivity(intent);
+                });
+
+                if (savedImage == null)
+                    updateCity();
             });
         });
     }
@@ -179,6 +201,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         protected void onPostExecute(Bitmap bitmap) {
             ImageView image = activityReference.get().findViewById(R.id.welcomeBannerImage);
             image.setImageBitmap(bitmap);
+            activityReference.get().imageSerializer.save(bitmap);
         }
     }
 }

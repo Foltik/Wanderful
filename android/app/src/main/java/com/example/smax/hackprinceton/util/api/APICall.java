@@ -22,7 +22,7 @@ public class APICall {
 
     public APICall(String resource, APICallback callbackFn) {
         callback = callbackFn;
-        query = new StringBuilder("https://foltik.lib.id/itinegen@dev").append(resource);
+        query = new StringBuilder("https://foltik.lib.id/itinegen@1.0.0").append(resource);
     }
 
     public APICall param(String key, Object o) {
@@ -41,6 +41,7 @@ public class APICall {
 
     public void execute() {
         Log.e("queryurl",query.toString());
+
         new AsyncCall(this).execute(query.toString());
     }
 
