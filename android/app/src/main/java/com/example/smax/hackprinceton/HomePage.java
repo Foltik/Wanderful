@@ -137,7 +137,6 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
         new APICall("/photo", result -> {
             String res = result.getString("result");
-            Log.d("APICall", res);
             new SetCityImageFromURL(this).execute(res);
         }).param("place", lastLocation.getAddress().getCity()).execute();
 
