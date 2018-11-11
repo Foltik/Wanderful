@@ -17,6 +17,7 @@ public class Itinerary extends AppCompatActivity {
     private LinearLayout linearLayout;
     private EditText numPlaces;
     private Button genItin;
+    private Button addPl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +27,14 @@ public class Itinerary extends AppCompatActivity {
         linearLayout = findViewById(R.id.lnrDynamicTextHolder);
         numPlaces = findViewById(R.id.edtNoCreate);
         genItin = (Button)findViewById(R.id.btnCreate);
+        addPl = (Button)findViewById(R.id.addBtn);
+        addPl.setOnClickListener(new addPlace());
         genItin.setOnClickListener(new generateItinerary());
     }
     class generateItinerary implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Button Clicked", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(v.getContext(), "Button Clicked", Toast.LENGTH_SHORT).show();
             int length = Integer.parseInt(numPlaces.getText().toString());
             //creates TextView elements programmatically
             for (int i = 0; i < length; i++) {
@@ -41,6 +44,12 @@ public class Itinerary extends AppCompatActivity {
                 placeOfInterest.setId(i + 1);
                 linearLayout.addView(placeOfInterest);
             }
+
+        }
+    }
+    class addPlace implements  View.OnClickListener{
+        @Override
+        public void onClick(View v){
 
         }
     }

@@ -3,8 +3,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,11 @@ import java.net.URL;
 
 public class Exchange extends AppCompatActivity{
     private Button exchange;
+    private double exchangeRate;
+    private TextView exchangedSum;
+    private Double numDollars;
+    private EditText usdSum;
+    private Double exchangedAmount;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -29,63 +36,33 @@ public class Exchange extends AppCompatActivity{
         setContentView(R.layout.activity_exchange);
         exchange = (Button)findViewById(R.id.currencyChange);
         exchange.setOnClickListener(new exchangeClick());
+        usdSum = (EditText)findViewById(R.id.usdText);
+        exchangedSum = (TextView)findViewById(R.id.currencyDisplay);
+        //numDollars = Double.parseDouble(usdSum.getText().toString());
         String countryCode = intent.getStringExtra("COUNTRY_CODE");//from HomePage
+
+        //API Call to retrieve latest exchange rate
+        new stdlibAPICall("/exchange", new stdlibAPICallback() {
+            @Override
+            public void onComplete(JSONObject result) {
+                try {
+                    exchangeRate = result.getDouble("result");
+                }catch(Exception e){
+                    Log.e("error",e.toString());
+                }
+
+            }
+        }).add("from","USD").add("to",countryCode).execute();
     }
     class exchangeClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+        exchangedAmount = exchangeRate * numDollars;
+        exchangedSum.setText(""+exchangedAmount);
 
-            exchange.setText("hello");
-          //  Exchange();
-
-        }
-    }
-    /*
-    public class exchangeRate extends AsyncTask<String, Void, Double>{
-        private String fixerAPIKey = "4d764507f666731a05a6ff3411aae672";
-        @Override
-        protected Double doInBackground(String... params){
-            StringBuilder request = new StringBuilder();
-            request.append("http://data.fixer.io/api/latest")
-                    .append("?access_key="+fixerAPIKey)
-                    .append("&base="+param[0])
-                    .append("&symbols="+param[1])
-                    .append("&format=1");
-            HttpURLConnection urlConnection = null;
-            URL url = null;
-            JSONObject object = null;
-            InputStream inStream = null;
-            try{
-                url = new URL(request.toString());
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
-                urlConnection.connect();
-                inStream = urlConnection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-                String temp, response = "";
-                while ((temp = reader.readLine()) != null) {
-                    response += temp;
-                }
-                object = (JSONObject) new JSONTokener(response).nextValue();
-            }catch(Exception e){
-
-            }finally {
-                if (inStream != null) {
-                    try {
-                        // this will close the bReader as well
-                        inStream.close();
-                    } catch (IOException ignored) {
-                    }
-                }
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
 
         }
     }
-    */
+
 }
 
