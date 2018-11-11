@@ -1,5 +1,4 @@
 const lib = require('lib');
-const directions = require('../directions.js');
 const places = require('../places.js');
 
 const fieldMap = (array, field, fn) =>
@@ -10,6 +9,10 @@ const fieldMap = (array, field, fn) =>
 
 const fieldSubmap = (array, field, fn) =>
       array.map(sub => sub.map(fieldMap(sub, field, fn)));
+
+const flat = (array, depth = 1) =>
+      array.reduce((flat, toFlatten) =>
+                   flat.concat((Array.isArray(toFlatten) && (depth-1)) ? flat(toFlatten, depth - 1) : toFlatten));
 
 /**
 * Returns a travel itinerary of places around a central location.
@@ -27,7 +30,7 @@ const fieldSubmap = (array, field, fn) =>
 */
 module.exports = async (radius, center, queries, num, context) => {
     queries = JSON.parse(queries);
-    
+
     // Get places 
     const max_places = 5;
     const weights = queries.map(q => q.weight);
@@ -45,7 +48,8 @@ module.exports = async (radius, center, queries, num, context) => {
                 p.weight = q.weight;
                 return p;
             })));
-    const weightOnly = weightedResults.flat().map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
+
+    //const weightOnly = flat(weightedResults).map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
 
     // Decay weight by index
     const adjustedResults = weightedResults.map(query =>
@@ -54,15 +58,15 @@ module.exports = async (radius, center, queries, num, context) => {
             p.weight = p.weight * (p.factor ** (index + 1));
             return p;
         }));
-    const decayOnly = adjustedResults.flat().map(p => `${trunc(p.weight)}:${trunc(p.factor)} -> ${p.name}`);
+    //const decayOnly = flat(adjustedResults).map(p => `${trunc(p.weight)}:${trunc(p.factor)} -> ${p.name}`);
 
     // Multiply weight by rating to get composite rating
-    const results = adjustedResults.map(query =>
+    const results = flat(adjustedResults.map(query =>
         query.map(p => {
             p.weight = p.weight * p.rating;
             return p;
-        })).flat().sort((a, b) => b.weight - a.weight);
-    const resultsWeight = results.map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
+        }))).sort((a, b) => b.weight - a.weight);
+    //const resultsWeight = results.map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
 
     const finalPlaces = results.map(p => {
         return {
@@ -77,10 +81,12 @@ module.exports = async (radius, center, queries, num, context) => {
     });
 
     return {
+        /*
         params: context.params,
         weightOnly: weightOnly,
         decayOnly: decayOnly,
         resultsWeight: resultsWeight,
+        */
         results: finalPlaces.slice(0, num)
     };
 };

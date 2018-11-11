@@ -1,9 +1,8 @@
 {
-  "name": "itinegen",
-  "version": "3.0.0",
-  "description": "",
+  "name": "wanderful",
+  "version": "1.1.0",
+  "description": "Wanderful is a simple and easy to use service that alleviates the stress and removes the unknowns from planning a trip.",
   "author": "foltik <jack@foltz.io>",
-  "main": "functions/__main__.js",
   "dependencies": {
     "axios": "^0.18.0",
     "lib": "^3.0.2"
@@ -11,7 +10,7 @@
   "private": true,
   "stdlib": {
     "build": "faaslang",
-    "name": "foltik/itinegen",
+    "name": "foltik/wanderful",
     "timeout": 10000,
     "personalize": {
       "keys": [],

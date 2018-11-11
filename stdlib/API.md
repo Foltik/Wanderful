@@ -1,15 +1,15 @@
-# NAME API
+# Wanderful API
 
 Have you ever been planning for a trip well before hand, and realized
 that you were spending more time planning than travelling? 
-NAME is a simple and easy to use service that alleviates the
+Wanderful is a simple and easy to use service that alleviates the
 stress and removes the unknowns from planning a trip.
 It can plan your trip down to the hour, customizing your trip
 based on a variety of contextual information such as location hours,
 hotel availability, and nearby events.
 
 Additionally, through the power of Standard Library, you can now integrate 
-rich contextual data into your own projects and applications using the NAME API.
+rich contextual data into your own projects and applications using the Wanderful API.
 
 The format of each API call is simple. Give the parameters documented below, a
 JSON object with the key `"request"` containing the target data is returned.
