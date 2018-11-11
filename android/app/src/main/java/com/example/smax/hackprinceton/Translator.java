@@ -50,7 +50,9 @@ public class Translator extends AppCompatActivity {
             savedSerializer.save(newText);
             phrasesText.setText(newText);
         });
-
+        clearButton.setOnClickListener(v -> {
+                    Serializer.clear();
+        }
         );
     }
 }
