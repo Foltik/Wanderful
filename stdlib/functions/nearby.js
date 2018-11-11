@@ -1,15 +1,14 @@
-/**
-* Returns a list of nearby places
-* @param {string} location Comma separated latitude and longitude
-* @param {number} radius How far around to find places
-* @param {number} num How many nearby places to get
-* @param {string} type What type of place to find
-* @returns {object}
-*/
-
 const places = require('../places.js');
 
-module.exports = async (location = '', radius, num, type = null, context) => {
+/**
+* Returns a list of nearby places
+* @param {string} location Comma separated latitude and longitude to search around
+* @param {number} radius How far around to search for points of interest
+* @param {number} num Limit the number of places returned
+* @param {string} type Optionally only find a certain type of place
+* @returns {object}
+*/
+module.exports = async (location, radius, num, type = null, context) => {
     let data = (await places.getNearby(location, radius, type));
     
     data = data.map(place => {

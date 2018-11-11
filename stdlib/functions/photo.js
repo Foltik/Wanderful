@@ -1,12 +1,11 @@
-/**
-* Returns a photo URL given a query string
-* @param {string} place Query for the place
-* @returns {object}
-*/
-
 const places = require('../places.js');
 
-module.exports = async (place = '', context) => {
+/**
+* Returns a photo URL from a text search
+* @param {string} place Query string
+* @returns {object}
+*/
+module.exports = async (place, context) => {
     place = await places.getPlace(place);
     const photo_reference = place.photos[0].photo_reference;
     const photo = await places.getPhoto(photo_reference, 800);

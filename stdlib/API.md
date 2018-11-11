@@ -1,4 +1,4 @@
-# API Documentation
+# Itinegen API
 
 This file should contain documentation introducing your API to **end-users**.
 It will display on your service's [Standard Library](https://stdlib.com/)

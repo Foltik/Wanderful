@@ -1,16 +1,3 @@
-/**
-* Returns a list of the best places
-* @param {number} radius How far around to build the itinerary
-* @param {string} center Where to build the itinerary around
-* @param {string} home Where to start the itinerary
-* @param {array} queries Keywords to find points of interest
-* @param {number} start_time When to start the day
-* @param {number} end_time When to end the day
-* @param {string} date What day to plan the itinerary
-* @param {number} num How many places to return
-* @returns {array}
-*/
-
 const lib = require('lib');
 const directions = require('../directions.js');
 const places = require('../places.js');
@@ -24,7 +11,15 @@ const fieldMap = (array, field, fn) =>
 const fieldSubmap = (array, field, fn) =>
       array.map(sub => sub.map(fieldMap(sub, field, fn)));
 
-module.exports = async (radius = 0, center, home, queries, start_time, end_time, date, num, context) => {
+/**
+* Returns a list of the best places
+* @param {number} radius How far around to search for points of interest
+* @param {string} center Location to center the search around
+* @param {array} queries JSON serialized pairs of keywords with weight to find and sort points of interest
+* @param {number} num Limit the maximum number of places
+* @returns {object}
+*/
+module.exports = async (radius, center, queries, num, context) => {
     queries = JSON.parse(queries);
     
     // Get places 
