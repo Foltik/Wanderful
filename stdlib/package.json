@@ -1,0 +1,21 @@
+{
+  "name": "itinegen",
+  "version": "2.1.0",
+  "description": "",
+  "author": "foltik <jack@foltz.io>",
+  "main": "functions/__main__.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "lib": "^3.0.2"
+  },
+  "private": true,
+  "stdlib": {
+    "build": "faaslang",
+    "name": "foltik/itinegen",
+    "timeout": 10000,
+    "personalize": {
+      "keys": [],
+      "user": []
+    }
+  }
+}
