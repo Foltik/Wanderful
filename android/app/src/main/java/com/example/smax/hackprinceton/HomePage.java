@@ -46,6 +46,45 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
     private boolean firstRun = true;
 
+    protected void applyCallbacks(Location location){
+        lastLocation = location;
+
+        findViewById(R.id.currency).setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), Exchange.class);
+            intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
+            startActivity(intent);
+        });
+
+        findViewById(R.id.nearby).setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), NearbyPlaces.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.translator).setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), Translator.class);
+            intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
+            startActivity(intent);
+        });
+
+        findViewById(R.id.itinerary).setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), Translator.class);
+            intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
+            startActivity(intent);
+        });
+
+        findViewById(R.id.refreshButton).setOnClickListener(v -> {
+            Log.d("REFRESH", "fortnite engage");
+            imageSerializer.clear();
+            bannerSerializer.clear();
+            updateLocation(this::applyCallbacks);
+        });
+
+        if (!imageSerializer.exists() || !bannerSerializer.exists() || firstRun) {
+            updateCity();
+            firstRun = false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         permissions = new int[1];
@@ -63,41 +102,8 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
             ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(imageSerializer.load().getBitmap());
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        initMapEngine(() -> {
-            updateLocation(location -> {
-                lastLocation = location;
+        initMapEngine(() -> updateLocation(this::applyCallbacks));
 
-                findViewById(R.id.currency).setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), Exchange.class);
-                    intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
-                    startActivity(intent);
-                });
-
-                findViewById(R.id.nearby).setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), NearbyPlaces.class);
-                    startActivity(intent);
-                });
-
-                findViewById(R.id.translator).setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), Translator.class);
-                    intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
-                    startActivity(intent);
-                });
-
-                findViewById(R.id.itinerary).setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), Translator.class);
-                    intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
-                    startActivity(intent);
-                });
-
-                if (!imageSerializer.exists() || !bannerSerializer.exists() || firstRun) {
-                    updateCity();
-                    firstRun = false;
-                }
-            });
-        });
-
-        findViewById(R.id.refreshButton).setOnClickListener(v -> updateCity());
     }
 
     private interface UpdateLocationCallback {

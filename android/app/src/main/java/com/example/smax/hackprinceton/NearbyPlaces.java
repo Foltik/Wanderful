@@ -1,10 +1,12 @@
 package com.example.smax.hackprinceton;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +75,20 @@ public class NearbyPlaces extends AppCompatActivity {
     private void addEntry(JSONObject place){
         try {
             LinearLayout newEntry = (LinearLayout) inflater.inflate(R.layout.place_entry,null);
+            newEntry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try{
+                       String address  = place.getString("address");
+                       String urlAddress = "http://maps.google.com/maps?q="+address;
+                       Log.d("FORTNITE",urlAddress);
+                       Intent intent  = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
+                       startActivity(intent);
+                    }catch(Exception e){
+                        Log.e("Failed to retrieve address", e.toString());
+                    }
+                }
+            });
             String entryName = place.getString("name");
             TextView title = (TextView) ((GridLayout) newEntry.getChildAt(1)).getChildAt(0);
             title.setText(entryName);
@@ -91,10 +107,13 @@ public class NearbyPlaces extends AppCompatActivity {
 
 
 
+
         }catch(Exception e){
             Log.e("hackprinceton",e.toString());
         }
+
     }
+
     public class setImage extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView;
         @Override
