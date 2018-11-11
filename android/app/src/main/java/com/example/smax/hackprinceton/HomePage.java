@@ -112,6 +112,15 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                                     startActivity(intent);
                                                 }
                                             });
+                                            findViewById(R.id.itinerary).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent intent = new Intent(v.getContext(), Itinerary.class);
+                                                    intent.putExtra("COUNTRY_CODE",code);
+                                                    startActivity(intent);
+                                                }
+                                            });
+
                                             /*
                                             findViewById(R.id.translator).setOnClickListener(new View.OnClickListener() {
                                                 @Override
