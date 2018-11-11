@@ -4,22 +4,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.renderscript.ScriptGroup;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,72 +26,93 @@ import com.here.android.mpa.common.*;
 import com.here.android.mpa.search.ErrorCode;
 import com.here.android.mpa.search.ResultListener;
 import com.here.android.mpa.search.ReverseGeocodeRequest2;
-import com.here.sdk.analytics.internal.HttpClient;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.here.android.mpa.search.ReverseGeocodeMode.RETRIEVE_ADDRESSES;
-
 
 public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private FusedLocationProviderClient mFusedLocationClient;
-    private int[] permissionsGranted;
-    private String googleAPIKey = "AIzaSyDljrMJe9V4a1ae3bIBEtvmewMC7DLxh5Q";
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location lastLocation;
+    private com.here.android.mpa.search.Location lastGeocodedLocation;
+
+    private int[] permissions;
+    private boolean permissionsGranted;
+
     private TextView banner;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        permissionsGranted = new int[1];
+        permissions = new int[1];
+        permissionsGranted = requestPermissions();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         banner = findViewById(R.id.welcomeBanner);
-        initMapEngine();
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        initMapEngine(() -> {
+            updateLocation((location, geocoded) -> {
+                lastLocation = location;
+                lastGeocodedLocation = geocoded;
+
+                findViewById(R.id.currency).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Exchange.class);
+                    intent.putExtra("COUNTRY_CODE", geocoded.getAddress().getCountryCode());
+                    startActivity(intent);
+                });
+
+                updateCity2();
+            });
+        });
     }
 
-    private class setCityImage extends AsyncTask<JSONObject, Void, Bitmap>{
+    private interface UpdateLocationCallback {
+        void onComplete(Location location, com.here.android.mpa.search.Location geocoded);
+    }
 
-        @Override
-        protected Bitmap doInBackground(JSONObject... urls) {
+    private void updateLocation(UpdateLocationCallback callback) {
+        if (!permissionsGranted)
+            return;
 
-            try {
-                URL url = new URL(urls[0].getString("result"));
-                return BitmapFactory.decodeStream((InputStream) url.getContent());
-            }catch(Exception e){
-                Log.e("fuq", e.toString());
-            }
-            return null;
-        }
-        protected void onPostExecute(Bitmap response){
-            ImageView image = findViewById(R.id.welcomeBannerImage);
-            image.setImageBitmap(response);
-        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location == null)
+                return;
+
+            GeoCoordinate coords = new GeoCoordinate(location.getLatitude(), location.getLongitude());
+            new ReverseGeocodeRequest2(coords).execute((geocodedLocation, errorCode) -> {
+                callback.onComplete(location, geocodedLocation);
+            });
+        });
+    }
+
+    private void updateCity2() {
+        if (!permissionsGranted)
+            return;
+
+        TextView banner = findViewById(R.id.welcomeBanner);
+        banner.setText("Welcome to " + lastGeocodedLocation.getAddress().getCity());
+
+        Log.d("APICall", "Starting API Call");
+
+        new APICall("/photo", result -> {
+            Log.d("APICall", result.getString("result"));
+            new SetCityImageFromURL(this).execute(result.getString("result"));
+        }).param("place", lastGeocodedLocation.getAddress().getCity()).execute();
 
     }
 
     private void updateCity(){
-        boolean granted = requestPermsandCheck();
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        boolean granted = requestPermissions();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (granted){
-            @SuppressLint("MissingPermission") Task<Location> locationTask = mFusedLocationClient.getLastLocation()
+            @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
@@ -115,17 +130,6 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                         if(errorCode == ErrorCode.NONE){
                                             String city = location.getAddress().getCity();
                                             updateLocation(city);
-                                            String url = new stdlibAPICall("/photo", new stdlibAPICallback() {
-                                                @Override
-                                                public void onComplete(JSONObject result) {
-                                                    Log.e("me", "shits done at least");
-                                                    Log.e("me", result.length() + "");
-                                                    new setCityImage().execute(result);
-
-
-                                                }
-                                            }).add("place",city).execute();
-                                            Log.e("me", url);
 
                                             final String code = location.getAddress().getCountryCode();
                                             findViewById(R.id.currency).setOnClickListener(new View.OnClickListener() {
@@ -177,26 +181,28 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         */
         updateLocation("no error");
     }
-    private boolean requestPermsandCheck() {
+
+    private boolean requestPermissions() {
         final List<String> requiredSDKPermissions = new ArrayList<String>();
         requiredSDKPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         requiredSDKPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         requiredSDKPermissions.add(Manifest.permission.INTERNET);
         requiredSDKPermissions.add(Manifest.permission.ACCESS_WIFI_STATE);
         requiredSDKPermissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
-        boolean request = false;
-        for (String s : requiredSDKPermissions) {
-            if (ActivityCompat.checkSelfPermission(this, s) != PackageManager.PERMISSION_GRANTED) {
-                request = true;
-            }
-        }
-        if (request)
+
+        boolean needGrant = false;
+        for (String s : requiredSDKPermissions)
+            if (ActivityCompat.checkSelfPermission(this, s) != PackageManager.PERMISSION_GRANTED)
+                needGrant = true;
+
+        if (needGrant)
             ActivityCompat.requestPermissions(this,
-                    requiredSDKPermissions.toArray(new String[requiredSDKPermissions.size()]),
+                    requiredSDKPermissions.toArray(new String[0]),
                     0);
-        for (int perm : permissionsGranted) {
+
+        for (int perm : permissions)
             if (perm != PackageManager.PERMISSION_GRANTED) return false;
-        }
+
         return true;
     }
     private void updateLocation(final String txt) {
@@ -205,10 +211,14 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        permissionsGranted = grantResults;
+        this.permissions = grantResults;
     }
 
-    private void initMapEngine() {
+    private interface MapEngineInitCompleteCallback {
+        void onComplete();
+    }
+
+    private void initMapEngine(MapEngineInitCompleteCallback callback) {
         // Set path of isolated disk cache
         Toast.makeText(this, "test toast", Toast.LENGTH_SHORT).show();
         boolean success = com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath(
@@ -228,15 +238,36 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
              * services that HERE Android SDK provides, the MapEngine must be initialized as the
              * prerequisite.
              */
-            MapEngine.getInstance().init(new ApplicationContext(thisActivity), new OnEngineInitListener() {
-                @Override
-                public void onEngineInitializationCompleted(Error error) {
-                    updateCity();
-                }
-            });
+            MapEngine.getInstance().init(new ApplicationContext(thisActivity), error -> callback.onComplete());
         }
     }
 
+    private static class SetCityImageFromURL extends AsyncTask<String, Void, Bitmap> {
+        private WeakReference<HomePage> activityReference;
+
+        SetCityImageFromURL(HomePage context) {
+            activityReference = new WeakReference<>(context);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            Log.d("SetPhoto", strings[0]);
+            InputStream stream = null;
+            try {
+                URL url = new URL(strings[0]);
+                stream = (InputStream)url.getContent();
+            } catch (java.lang.Throwable e) {
+                Log.e("SetCityImageFromURL", e.toString());
+            }
+            return BitmapFactory.decodeStream(stream);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            ImageView image = activityReference.get().findViewById(R.id.welcomeBannerImage);
+            image.setImageBitmap(bitmap);
+        }
+    }
 }
 
 
