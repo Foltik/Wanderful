@@ -40,6 +40,7 @@ module.exports = async (radius, center, queries, num, context) => {
 
     const trunc = num => num.toFixed(2);
 
+    // Weight result by category weight
     const weightedResults = await Promise.all(queries.map(async q =>
         (await places.getPlaces(center, radius, q.query))
             .sort((a, b) => b.rating - a.rating)
@@ -49,8 +50,6 @@ module.exports = async (radius, center, queries, num, context) => {
                 return p;
             })));
 
-    //const weightOnly = flat(weightedResults).map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
-
     // Decay weight by index
     const adjustedResults = weightedResults.map(query =>
         query.map((p, index) => {
@@ -58,7 +57,6 @@ module.exports = async (radius, center, queries, num, context) => {
             p.weight = p.weight * (p.factor ** (index + 1));
             return p;
         }));
-    //const decayOnly = flat(adjustedResults).map(p => `${trunc(p.weight)}:${trunc(p.factor)} -> ${p.name}`);
 
     // Multiply weight by rating to get composite rating
     const results = flat(adjustedResults.map(query =>
@@ -66,7 +64,6 @@ module.exports = async (radius, center, queries, num, context) => {
             p.weight = p.weight * p.rating;
             return p;
         }))).sort((a, b) => b.weight - a.weight);
-    //const resultsWeight = results.map(p => `${trunc(p.weight)}:${trunc(p.rating)} -> ${p.name}`);
 
     const finalPlaces = results.map(p => {
         return {
@@ -81,12 +78,6 @@ module.exports = async (radius, center, queries, num, context) => {
     });
 
     return {
-        /*
-        params: context.params,
-        weightOnly: weightOnly,
-        decayOnly: decayOnly,
-        resultsWeight: resultsWeight,
-        */
-        results: finalPlaces.slice(0, num)
+        result: finalPlaces.slice(0, num)
     };
 };
