@@ -56,6 +56,12 @@
                 android:gravity="center"
                 app:srcCompat="@android:drawable/ic_media_play" />
 
+            <Button
+                android:id="@+id/clearButton"
+                android:layout_width="54dp"
+                android:layout_height="wrap_content"
+                android:text="Clear" />
+
             <TextView
                 android:id="@+id/phrasesText"
                 android:layout_width="match_parent"

@@ -21,8 +21,11 @@
             android:contentDescription="@string/banner_desc"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="40sp"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:text="Welcome!"
+            android:textStyle="bold"
+            android:shadowColor="#ffffff"
+            android:shadowRadius="10"
 
             />
     </RelativeLayout>

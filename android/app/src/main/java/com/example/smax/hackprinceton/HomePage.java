@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smax.hackprinceton.util.api.APICall;
+import com.example.smax.hackprinceton.util.serialize.Serializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.here.android.mpa.common.*;

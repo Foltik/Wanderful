@@ -37,6 +37,7 @@ public class Translator extends AppCompatActivity {
         // Instantiates a client
         setContentView(R.layout.activity_translator);
         final Button translateButton = findViewById(R.id.translateButton);
+        final Button clearButton = findViewById(R.id.clearButton);
         final ImageButton saveButton = findViewById(R.id.saveButton);
         final TextView userText = findViewById(R.id.userText);
         final TextView translateText = findViewById(R.id.translateText);
@@ -67,6 +68,8 @@ public class Translator extends AppCompatActivity {
             savedSerializer.save(newText);
             phrasesText.setText(newText);
         });
+
+        );
     }
 }
 
