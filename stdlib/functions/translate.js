@@ -2,7 +2,7 @@ const lib = require('lib');
 const axios = require('axios');
 
 const api_url = 'https://translation.googleapis.com/language/translate/v2';
-const key = '&key=AIzaSyCVktAWTsOabuB_YAZdLznuEtyiZnbUlss';
+const key = '&key=YOUR_API_KEY';
 
 /**
 * Translates a string between different languages.

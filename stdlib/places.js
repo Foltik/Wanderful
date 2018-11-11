@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const api_url = 'https://maps.googleapis.com/maps/api/place';
-const key = '&key=AIzaSyCL2k612OOVYYxrqP2j7t1ty8nANPpQlPE';
+const key = '&key=YOUR_API_KEY';
 
 const get_api = async resource =>
       axios.get(api_url + resource + key);

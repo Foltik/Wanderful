@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const api_url = 'https://restcountries.eu/rest/v2/alpha/';
-const key = '&access_key=4d764507f666731a05a6ff3411aae672';
+const key = '&access_key=YOUR_API_KEY';
 
 /**
 * Returns the string ISO language code, given an ISO country code.
