@@ -1,6 +1,7 @@
 package com.example.smax.hackprinceton;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,12 +12,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smax.hackprinceton.util.api.APICall;
+import com.example.smax.hackprinceton.util.serialize.BitmapDataObject;
+import com.example.smax.hackprinceton.util.serialize.Serializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.here.android.mpa.common.*;
@@ -32,11 +36,15 @@ import java.util.List;
 
 
 public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
-
+    private Serializer<BitmapDataObject> imageSerializer;
+    private Serializer<String> bannerSerializer;
     private int[] permissions;
     private boolean permissionsGranted;
+
+    private boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,14 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        bannerSerializer = new Serializer<>("banner.txt");
+        if (bannerSerializer.exists())
+            ((TextView)findViewById(R.id.welcomeBanner)).setText(bannerSerializer.load());
+
+        imageSerializer = new Serializer<>("homeImage.png");
+        if (imageSerializer.exists())
+            ((ImageView)findViewById(R.id.welcomeBannerImage)).setImageBitmap(imageSerializer.load().getBitmap());
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initMapEngine(() -> {
@@ -57,15 +73,38 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                     startActivity(intent);
                 });
 
-                updateCity();
+                findViewById(R.id.nearby).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), NearbyPlaces.class);
+                    startActivity(intent);
+                });
+
+                findViewById(R.id.translator).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    intent.putExtra("COUNTRY_CODE", location.getAddress().getCountryCode());
+                    startActivity(intent);
+                });
+
+                findViewById(R.id.itinerary).setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), Translator.class);
+                    intent.putExtra("COORDINATES", "" + location.getCoordinate().getLatitude() + "," + location.getCoordinate().getLongitude());
+                    startActivity(intent);
+                });
+
+                if (!imageSerializer.exists() || !bannerSerializer.exists() || firstRun) {
+                    updateCity();
+                    firstRun = false;
+                }
             });
         });
+
+        findViewById(R.id.refreshButton).setOnClickListener(v -> updateCity());
     }
 
     private interface UpdateLocationCallback {
         void onComplete(Location location);
     }
 
+    @SuppressLint("MissingPermission")
     private void updateLocation(UpdateLocationCallback callback) {
         if (!permissionsGranted)
             return;
@@ -84,18 +123,21 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         });
     }
 
+
     private void updateCity() {
         if (!permissionsGranted)
             return;
 
+        String text = "Welcome to " + lastLocation.getAddress().getCity();
         TextView banner = findViewById(R.id.welcomeBanner);
-        banner.setText("Welcome to " + lastLocation.getAddress().getCity());
+        banner.setText(text);
+        bannerSerializer.save(text);
 
         Log.d("APICall", "Starting API Call");
 
         new APICall("/photo", result -> {
-            Log.d("APICall", result.getString("result"));
-            new SetCityImageFromURL(this).execute(result.getString("result"));
+            String res = result.getString("result");
+            new SetCityImageFromURL(this).execute(res);
         }).param("place", lastLocation.getAddress().getCity()).execute();
 
     }
@@ -169,6 +211,7 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
         protected void onPostExecute(Bitmap bitmap) {
             ImageView image = activityReference.get().findViewById(R.id.welcomeBannerImage);
             image.setImageBitmap(bitmap);
+            activityReference.get().imageSerializer.save(new BitmapDataObject(bitmap));
         }
     }
 }

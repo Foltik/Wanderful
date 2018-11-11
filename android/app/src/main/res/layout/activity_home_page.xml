@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,8 +22,11 @@
             android:contentDescription="@string/banner_desc"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="40sp"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:text="Welcome!"
+            android:textStyle="bold"
+            android:shadowColor="#ffffff"
+            android:shadowRadius="10"
 
             />
     </RelativeLayout>
@@ -51,25 +55,52 @@
             android:text="@string/nearby_button"
             android:backgroundTint="#ffaa00"/>
     </LinearLayout>
+
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="?android:attr/buttonBarStyle">
+        android:layout_weight="1">
+
         <Button
             android:id="@+id/translator"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/trans_button"
-            android:backgroundTint="#9999ff"/>
+            android:backgroundTint="#9999ff"
+            android:text="@string/trans_button" />
+
         <Button
             android:id="@+id/currency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/exch_button"
             android:backgroundTint="#b37700"
-            android:textColor="#eeeeee"/>
+            android:text="@string/exch_button"
+            android:textColor="#eeeeee" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/refreshButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/refresh"
+                android:textColor="#eeeeee"
+                android:backgroundTint="#222222"
+                />
+            <Button
+                android:id="@+id/settingsButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/settings"
+                android:backgroundTint="#dddddd"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
