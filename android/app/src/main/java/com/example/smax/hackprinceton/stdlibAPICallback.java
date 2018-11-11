@@ -1,5 +1,7 @@
 package com.example.smax.hackprinceton;
 
-public interface stdlibAPICallback<T>{
-    public void onComplete(T result);
+import org.json.JSONObject;
+
+public interface stdlibAPICallback{
+    public void onComplete(JSONObject result);
 }

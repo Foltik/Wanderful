@@ -73,6 +73,26 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
 
     }
 
+    private class setCityImage extends AsyncTask<JSONObject, Void, Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(JSONObject... urls) {
+
+            try {
+                URL url = new URL(urls[0].getString("result"));
+                return BitmapFactory.decodeStream((InputStream) url.getContent());
+            }catch(Exception e){
+                Log.e("fuq", e.toString());
+            }
+            return null;
+        }
+        protected void onPostExecute(Bitmap response){
+            ImageView image = findViewById(R.id.welcomeBannerImage);
+            image.setImageBitmap(response);
+        }
+
+    }
+
     private void updateCity(){
         boolean granted = requestPermsandCheck();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -95,18 +115,17 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                         if(errorCode == ErrorCode.NONE){
                                             String city = location.getAddress().getCity();
                                             updateLocation(city);
-                                            updatePicture(city);
-                                            new PhotoAPI().execute(city);
-                                            new stdlibAPICall<String>("/photo", new stdlibAPICallback<String>() {
+                                            String url = new stdlibAPICall("/photo", new stdlibAPICallback() {
                                                 @Override
-                                                public void onComplete(String result) {
-                                                    InputStream input = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
-                                                    ImageView image = findViewById(R.id.welcomeBannerImage);
-                                                    image.setImageBitmap(BitmapFactory.decodeStream(input));
+                                                public void onComplete(JSONObject result) {
+                                                    Log.e("me", "shits done at least");
+                                                    Log.e("me", result.length() + "");
+                                                    new setCityImage().execute(result);
+
+
                                                 }
-                                            }).add("place",city);
-
-
+                                            }).add("place",city).execute();
+                                            Log.e("me", url);
 
                                             final String code = location.getAddress().getCountryCode();
                                             findViewById(R.id.currency).setOnClickListener(new View.OnClickListener() {
