@@ -6,4 +6,6 @@
     <string name="trans_button">Translator</string>
     <string name="exch_button">Currency Exchange</string>
     <string name="banner_desc">Welcome Banner Image</string>
+    <string name="settings">Settings</string>
+    <string name="refresh">Refresh</string>
 </resources>

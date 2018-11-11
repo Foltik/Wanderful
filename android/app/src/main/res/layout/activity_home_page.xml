@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,25 +52,50 @@
             android:text="@string/nearby_button"
             android:backgroundTint="#ffaa00"/>
     </LinearLayout>
+
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="?android:attr/buttonBarStyle">
+        android:layout_weight="1">
+
         <Button
             android:id="@+id/translator"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/trans_button"
-            android:backgroundTint="#9999ff"/>
+            android:backgroundTint="#9999ff"
+            android:text="@string/trans_button" />
+
         <Button
             android:id="@+id/currency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/exch_button"
             android:backgroundTint="#b37700"
-            android:textColor="#eeeeee"/>
+            android:text="@string/exch_button"
+            android:textColor="#eeeeee" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/refresh"
+                android:textColor="#eeeeee"
+                android:backgroundTint="#222222"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/settings"
+                android:backgroundTint="#dddddd"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

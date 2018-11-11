@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,16 +60,13 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
     private String googleAPIKey = "AIzaSyDljrMJe9V4a1ae3bIBEtvmewMC7DLxh5Q";
     private TextView banner;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         permissionsGranted = new int[1];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         banner = findViewById(R.id.welcomeBanner);
+
         initMapEngine();
 
     }
@@ -146,6 +144,13 @@ public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequ
                                                 }
                                             });
                                             */
+                                            findViewById(R.id.nearby).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent intent = new Intent(v.getContext(), NearbyPlaces.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
                                         }
                                         else{
                                             updateLocation("geolocation failed");
