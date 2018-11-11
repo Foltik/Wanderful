@@ -1,4 +1,4 @@
-package com.example.smax.hackprinceton;
+package com.example.smax.hackprinceton.util.api;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -20,7 +20,7 @@ public class APICall {
     private boolean firstParam = true;
     private APICallback callback;
 
-    APICall(String resource, APICallback callbackFn) {
+    public APICall(String resource, APICallback callbackFn) {
         callback = callbackFn;
         query = new StringBuilder("https://foltik.lib.id/itinegen@dev").append(resource);
     }
@@ -39,7 +39,7 @@ public class APICall {
         return this;
     }
 
-    void execute() {
+    public void execute() {
         new AsyncCall(this).execute(query.toString());
     }
 
