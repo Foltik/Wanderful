@@ -1,113 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:padding="5dp" >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/edtNoCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="How many places do you want to see?"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"/>
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"/>
+    </LinearLayout>
+<ScrollView
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:layout_marginTop="5dp">
+    <LinearLayout
+        android:id="@+id/lnrDynamicTextHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-        <TextView
-            android:id="@+id/stayQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Where will you be staying?"
-            android:textSize="20"/>
-
-        <EditText
-            android:id="@+id/stayLoc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Be as specific as possible" />
-
-        <TextView
-            android:id="@+id/radQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Radius?"
-            android:textSize="20"/>
-
-        <EditText
-            android:id="@+id/radNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Give radius in kilometers"/>
-
-        <TextView
-            android:id="@+id/dateQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date?"
-            android:textSize="20"/>
-
-        <EditText
-            android:id="@+id/dateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="mm/dd/yy"/>
-
-        <TextView
-            android:id="@+id/timeQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Time?"
-            android:textSize="20"/>
-
-        <EditText
-            android:id="@+id/timeTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="time"
-            android:hint=""/>
-
-        <TextView
-            android:id="@+id/interestQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="What are you interested in?"
-            android:textSize="20"/>
-
-        <SeekBar
-            android:id="@+id/seekBar2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
-
-
-
-
+</ScrollView>
 </LinearLayout>
