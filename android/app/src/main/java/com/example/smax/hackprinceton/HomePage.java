@@ -34,7 +34,7 @@ import java.util.List;
 public class HomePage extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private Location lastLocation;
-
+    private Serializer<Bitmap> imageSerializer;
     private int[] permissions;
     private boolean permissionsGranted;
 
