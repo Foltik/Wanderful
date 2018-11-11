@@ -40,6 +40,7 @@ public class APICall {
     }
 
     public void execute() {
+        Log.e("thing", query.toString());
         new AsyncCall(this).execute(query.toString());
     }
 

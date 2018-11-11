@@ -7,10 +7,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.smax.hackprinceton.util.api.APICall;
 import com.example.smax.hackprinceton.util.serialize.Serializer;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -49,7 +47,6 @@ public class Translator extends AppCompatActivity {
         if (oldText != null)
             phrasesText.setText(oldText);
 
-
         String countryCode = getIntent().getStringExtra("COUNTRY_CODE");
 
         translateButton.setOnClickListener(v -> {
@@ -70,40 +67,6 @@ public class Translator extends AppCompatActivity {
             savedSerializer.save(newText);
             phrasesText.setText(newText);
         });
-    }
-
-    private String readFromSaved() {
-        File f = new File("saved.txt");
-        String res = null;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(f));
-
-            StringBuilder sb = new StringBuilder();
-            String line = reader.readLine();
-            while (line != null) {
-                sb.append(line).append('\n');
-                line = reader.readLine();
-            }
-
-            res = sb.toString();
-
-
-        } catch (java.lang.Throwable e) {
-            Log.e("ERROR BRO ", "AAAA", e);
-        }
-
-        return res;
-    }
-
-    private void writeToSaved(String text) {
-        File f = new File("saved.txt");
-        try {
-            FileWriter fw = new FileWriter(f, false);
-            fw.write(text);
-            fw.close();
-        } catch (IOException e) {
-            Log.e("ERROR BRO ", "AAAA", e);
-        }
     }
 }
 
