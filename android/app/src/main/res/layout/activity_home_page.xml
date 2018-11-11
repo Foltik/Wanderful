@@ -22,8 +22,11 @@
             android:contentDescription="@string/banner_desc"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="40sp"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:text="Welcome!"
+            android:textStyle="bold"
+            android:shadowColor="#ffffff"
+            android:shadowRadius="10"
 
             />
     </RelativeLayout>
@@ -81,6 +84,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <Button
+                android:id="@+id/refreshButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -89,6 +93,7 @@
                 android:backgroundTint="#222222"
                 />
             <Button
+                android:id="@+id/settingsButton"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
